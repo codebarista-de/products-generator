@@ -1,0 +1,39 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Build & Package
+
+# Controls when the action will run. 
+on: [workflow_dispatch, push]
+
+jobs:
+  build_windows:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Create Executable
+        uses: sayyid5416/pyinstaller@v1.4.0
+        with:
+          python_ver: '3.10'
+          pyinstaller_ver: '==6.3.0'
+          spec: 'main.py'
+          requirements: 'requirements.txt'
+          upload_exe_with_name: 'Produkte Generator'
+          options: --onefile, --name "Produkte Generator"
+
+  build_linux:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Create Executable
+        uses: sayyid5416/pyinstaller@v1.4.0
+        with:
+          python_ver: '3.10'
+          pyinstaller_ver: '==6.3.0'
+          spec: 'main.py'
+          requirements: 'requirements.txt'
+          upload_exe_with_name: 'Produkte-Generator'
+          options: --onefile, --name "Produkte-Generator"
