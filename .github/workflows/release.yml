@@ -4,6 +4,9 @@ permissions:
   contents: write
 
 on:
+  push:
+    tags:
+      - '*'
   workflow_run:
     workflows: [Build & Package]
     types:
@@ -11,7 +14,7 @@ on:
 
 jobs:
   publish:
-    if: startsWith(github.ref, 'refs/tags/')
+    if: startsWith(github.event.workflow_run.head_branch, 'refs/tags/')
     name: Publish Executables
     runs-on: ubuntu-latest
 
