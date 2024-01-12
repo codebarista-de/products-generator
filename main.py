@@ -80,35 +80,38 @@ def createProductDescription(template: str, values: dict) -> str:
     return description
 
 
+def run():
+    output_dir = pathlib.Path(OUT_DIR)
+    if output_dir.is_dir():
+        shutil.rmtree("Ausgabe")
+    elif output_dir.is_file():
+        output_dir.unlink()
+    os.makedirs("Ausgabe", exist_ok=True)
+
+    template = glob.glob("Eingabe/*.html")
+    value_file = glob.glob("Eingabe/*.csv")
+
+    if len(template) != 1:
+        template_files = "\n".join(template)
+        writeError(
+            f"""Es muss genau eine .html Datei im Order Eingabe liegen.
+Anzahl der gefundenen .html Dateien: {len(template)}\n{template_files}"""
+        )
+        return
+
+    if len(value_file) != 1:
+        value_files = "\n".join(value_file)
+        writeError(
+            f"""Es muss genau eine .csv Datei im Order Eingabe liegen.
+Anzahl der gefundenen .csv Dateien: {len(value_file)}\n{value_files}"""
+        )
+        return
+
+    generateProductDescriptions(template[0], value_file[0])
+
+
 if __name__ == "__main__":
     try:
-        output_dir = pathlib.Path(OUT_DIR)
-        if output_dir.is_dir():
-            shutil.rmtree("Ausgabe")
-        elif output_dir.is_file():
-            output_dir.unlink()
-        os.makedirs("Ausgabe", exist_ok=True)
-
-        template = glob.glob("Eingabe/*.html")
-        value_file = glob.glob("Eingabe/*.csv")
-
-        if len(template) != 1:
-            template_files = "\n".join(template)
-            writeError(
-                f"""Es muss genau eine .html Datei im Order Eingabe liegen.
-    Anzahl der gefundenen .html Dateien: {len(template)}\n{template_files}"""
-            )
-            exit(1)
-
-        if len(value_file) != 1:
-            value_files = "\n".join(value_file)
-            writeError(
-                f"""Es muss genau eine .csv Datei im Order Eingabe liegen.
-    Anzahl der gefundenen .csv Dateien: {len(value_file)}\n{value_files}"""
-            )
-            exit(1)
-
-        generateProductDescriptions(template[0], value_file[0])
-
+        run()
     except Exception:
         writeError(traceback.format_exc())
