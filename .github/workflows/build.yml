@@ -1,10 +1,14 @@
 name: Build & Package
 
+permissions:
+  contents: write
+
 on: [workflow_dispatch, push]
 
 jobs:
   build_windows:
     runs-on: windows-latest
+    name: Build for Windows
 
     steps:
       - uses: actions/checkout@v3
@@ -21,6 +25,7 @@ jobs:
 
   build_linux:
     runs-on: ubuntu-latest
+    name: Build for Linux
 
     steps:
       - uses: actions/checkout@v3
@@ -34,3 +39,28 @@ jobs:
           requirements: 'requirements.txt'
           upload_exe_with_name: 'Produkte Generator (Linux)'
           options: --onefile, --name "Produkte-Generator"
+
+  publish:
+    if: startsWith(github.ref, 'refs/tags/')
+    needs: [build_windows, build_linux]
+    name: Publish Executables
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/download-artifact@v2
+      with:
+        name: 'Produkte Generator (Windows)'
+        path: 'artifacts'
+    - uses: actions/download-artifact@v2
+      with:
+        name: 'Produkte Generator (Linux)'
+        path: 'artifacts'
+
+    - name: Upload artifacts to release
+      uses: svenstaro/upload-release-action@v2
+      with:
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        file: artifacts/*
+        file_glob: true
+        tag: ${{ github.ref }}
+        overwrite: true
