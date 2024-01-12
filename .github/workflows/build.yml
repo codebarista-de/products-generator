@@ -19,7 +19,7 @@ jobs:
           pyinstaller_ver: '==6.3.0'
           spec: 'main.py'
           requirements: 'requirements.txt'
-          upload_exe_with_name: 'Produkte Generator'
+          upload_exe_with_name: 'Produkte Generator (Windows)'
           options: --onefile, --name "Produkte Generator"
 
   build_linux:
@@ -35,5 +35,5 @@ jobs:
           pyinstaller_ver: '==6.3.0'
           spec: 'main.py'
           requirements: 'requirements.txt'
-          upload_exe_with_name: 'Produkte-Generator'
+          upload_exe_with_name: 'Produkte Generator (Linux)'
           options: --onefile, --name "Produkte-Generator"
