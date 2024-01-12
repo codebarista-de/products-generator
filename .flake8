@@ -1,0 +1,7 @@
+[flake8]
+# Black uses 88 chars by default.
+max-line-length = 100
+# Black takes care of formatting correctly,
+# flake8 is wrong here, see:
+# https://black.readthedocs.io/en/stable/the_black_code_style.html
+ignore = E203, W503
