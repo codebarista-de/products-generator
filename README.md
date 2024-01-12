@@ -26,7 +26,8 @@ SW10003,Trouser,yellow
 
 If you put those two files in a folder named "Eingabe"
 ```
-./Product-Generator
+./
+  Product-Generator.exe
   Eingabe/
     products.csv
     description-template.html
