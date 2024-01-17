@@ -16,13 +16,13 @@ PRODUCT_NAME = "Produktname"
 
 
 def writeError(e: str):
-    with open(ERROR_FILE, "w") as file:
+    with open(ERROR_FILE, "w", encoding='utf-8') as file:
         print("Fehler: " + e)
         file.write(e)
 
 
 def readTemplate(path: str) -> str:
-    with open(path, "r") as template:
+    with open(path, "r", encoding='utf-8') as template:
         return template.read().strip()
 
 
@@ -42,7 +42,7 @@ def generateProductDescriptions(template_file: str, values_file: str):
         ]
     )
     row_num = 1
-    with open(values_file, newline="") as csvfile:
+    with open(values_file, newline="", encoding='utf-8') as csvfile:
         for row in csv.DictReader(csvfile):
             product_number = row.get(PRODUCT_NUMBER, "").strip()
             product_name = row.get(PRODUCT_NAME).strip()
