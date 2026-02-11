@@ -11,49 +11,97 @@ jobs:
     name: Build for Windows
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          pip install pyinstaller==6.3.0
+          pip install -r requirements.txt
 
       - name: Create Executable
-        uses: sayyid5416/pyinstaller@v1.4.0
+        run: pyinstaller --onefile --name "Produkte-Generator" main.py
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
         with:
-          python_ver: '3.10'
-          pyinstaller_ver: '==6.3.0'
-          spec: 'main.py'
-          requirements: 'requirements.txt'
-          upload_exe_with_name: 'Produkte Generator (Windows)'
-          options: --onefile, --name "Produkte-Generator"
+          name: 'Produkte Generator (Windows)'
+          path: 'dist/'
 
   build_linux:
     runs-on: ubuntu-latest
     name: Build for Linux
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          pip install pyinstaller==6.3.0
+          pip install -r requirements.txt
 
       - name: Create Executable
-        uses: sayyid5416/pyinstaller@v1.4.0
+        run: pyinstaller --onefile --name "Produkte-Generator" main.py
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
         with:
-          python_ver: '3.10'
-          pyinstaller_ver: '==6.3.0'
-          spec: 'main.py'
-          requirements: 'requirements.txt'
-          upload_exe_with_name: 'Produkte Generator (Linux)'
-          options: --onefile, --name "Produkte-Generator"
+          name: 'Produkte Generator (Linux)'
+          path: 'dist/'
+
+  build_macos:
+    runs-on: macos-latest
+    name: Build for macOS
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          pip install pyinstaller==6.3.0
+          pip install -r requirements.txt
+
+      - name: Create Executable
+        run: pyinstaller --onefile --name "Produkte-Generator" main.py
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: 'Produkte Generator (macOS)'
+          path: 'dist/'
 
   publish:
     if: startsWith(github.ref, 'refs/tags/')
-    needs: [build_windows, build_linux]
+    needs: [build_windows, build_linux, build_macos]
     name: Publish Executables
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/download-artifact@v2
+    - uses: actions/download-artifact@v4
       with:
         name: 'Produkte Generator (Windows)'
         path: 'artifacts'
-    - uses: actions/download-artifact@v2
+    - uses: actions/download-artifact@v4
       with:
         name: 'Produkte Generator (Linux)'
+        path: 'artifacts'
+    - uses: actions/download-artifact@v4
+      with:
+        name: 'Produkte Generator (macOS)'
         path: 'artifacts'
 
     - name: Upload artifacts to release
