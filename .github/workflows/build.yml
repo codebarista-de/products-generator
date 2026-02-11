@@ -50,7 +50,7 @@ jobs:
           pip install -r requirements.txt
 
       - name: Create Executable
-        run: pyinstaller --onefile --name "Produkte-Generator" main.py
+        run: pyinstaller --onefile --name "Produkte-Generator-Linux" main.py
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
@@ -76,7 +76,7 @@ jobs:
           pip install -r requirements.txt
 
       - name: Create Executable
-        run: pyinstaller --onefile --name "Produkte-Generator" main.py
+        run: pyinstaller --onefile --name "Produkte-Generator-macOS" main.py
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
